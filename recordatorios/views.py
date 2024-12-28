@@ -65,6 +65,7 @@ class CreateReminder(LoginRequiredMixin, CreateView):
         form.instance.user = self.request.user
         return super().form_valid(form)
 
+
 class ListReminder(LoginRequiredMixin, ListView):
     model = Reminder
 
