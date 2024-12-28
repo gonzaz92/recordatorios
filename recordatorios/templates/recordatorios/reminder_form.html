@@ -4,7 +4,7 @@
 
 <div class='container d-flex justify-content-center align-items-center' style='height: 85vh;'>
     <div class='card w-80' style='background-color: #e1ebea'>
-        <form method="POST">
+        <form method="POST" action="{% url 'create_reminder' %}">
             {% csrf_token %}
             {{ form.media }}
             <div class='card-header text-center'>
