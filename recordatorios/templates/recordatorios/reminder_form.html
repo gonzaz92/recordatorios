@@ -35,7 +35,7 @@
                     </div>
                 </div>
                 <div hidden>
-                    {{ form.user}}
+                    {{ request.user.username }}
                 </div>
             </div>
             {% if request.resolver_match.view_name == 'create_reminder' %}
