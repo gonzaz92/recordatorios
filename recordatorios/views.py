@@ -61,6 +61,10 @@ class CreateReminder(LoginRequiredMixin, CreateView):
     template_name = 'recordatorios/reminder_form.html'
     success_url = reverse_lazy('home')
 
+    def form_valid(self, form):
+        form.instance.user = self.request.user
+        return super().form_valid(form)
+
 class ListReminder(LoginRequiredMixin, ListView):
     model = Reminder
 

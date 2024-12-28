@@ -4,7 +4,7 @@
 
 <div class='container d-flex justify-content-center align-items-center' style='height: 85vh;'>
     <div class='card w-80' style='background-color: #e1ebea'>
-        <form method="POST" action="{% url 'create_reminder' %}">
+        <form method="POST">
             {% csrf_token %}
             {{ form.media }}
             <div class='card-header text-center'>
@@ -33,6 +33,9 @@
                         <div class='text-center'>Descripción: </div>
                         {{ form.description }}
                     </div>
+                </div>
+                <div hidden>
+                    {{ form.user}}
                 </div>
             </div>
             {% if request.resolver_match.view_name == 'create_reminder' %}
