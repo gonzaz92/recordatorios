@@ -1,0 +1,25 @@
+{% extends 'recordatorios/Base.html' %}
+
+{% block contenido %}
+
+<div class='container-fluid'>
+    <div class='row row-cols-1 row-cols-md-3'>
+        {% for status in list_status %}
+            <div class='col py-3'>
+                <div class='card' style='background-color: #e1ebea'>
+                    <div class='card-header text-center'> 
+                        {{ status.name }}
+                    </div>
+                    <div class='card-body'>
+                        {% include 'recordatorios/cards.html' %}
+                    </div>
+                    <div class='card-footer text-center'>
+                        <a href="{% url 'reminder_list' %}?status={{ status.id }}" class='btn btn-outline-dark'> Ver más </a>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+</div>
+
+{% endblock %}

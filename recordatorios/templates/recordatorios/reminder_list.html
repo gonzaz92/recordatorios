@@ -1,0 +1,27 @@
+{% extends 'recordatorios/Base.html' %}
+{% block contenido %}
+
+<div class="container">
+    {% for status in list_status %}
+        {% if request.GET.status|default:'' == status.id|stringformat:"s" %}
+            <h1 class="text-center" style="margin-top: 2rem">{{ status.name }}</h1>
+            <div class="row">
+                {% for reminder in object_list %}
+                    <div class="col-md-4 py-2">
+                        <div class="card mb-3">
+                            <div class="card-header" style="background-color: {{ reminder.priority.color }};">
+                                <!-- Agregar contenido al header si es necesario -->
+                            </div>
+                            <div class="card-body">
+                                {{ reminder.title }}
+                                <a class="btn btn-outline-dark float-end" href="{% url 'reminder_detail' reminder.id %}">Ver Detalle</a>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        {% endif %}
+    {% endfor %}
+</div>
+
+{% endblock %}

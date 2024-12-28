@@ -1,0 +1,19 @@
+{% for reminder in list_reminder %}
+    {% if reminder.status == status.id %}
+        <div class='row'>
+            <div class='col py-1'>
+                <div class='card'>
+                    {% for priority in list_priority %}
+                        {% if reminder.priority == priority.id %}
+                            <div class='card-header' style='background-color: {{ priority.color }}'></div>
+                        {% endif %}
+                    {% endfor %}
+                    <div class='card-body' style='background-color: #f9f9f9'>
+                        {{ reminder.title }}
+                        <a class='btn btn-outline-dark' style='float:right' href="{% url 'reminder_detail' reminder.id %}">Ver Detalle</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% endif %}
+{% endfor %}
