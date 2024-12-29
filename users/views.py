@@ -2,8 +2,9 @@ from django.shortcuts import render
 from django.contrib.auth.models import User
 from django.views.generic import CreateView, DetailView, UpdateView, DeleteView
 from django.contrib.auth.views import LoginView, LogoutView, PasswordChangeView
+from django.contrib.auth.forms import PasswordChangeForm
 from django.contrib.auth.mixins import LoginRequiredMixin
-from users.forms import UserForm, ChangePasswordForm, UserUpdateForm
+from users.forms import UserForm, UserUpdateForm
 from django.urls import reverse_lazy
 
 ##########################################################################################
@@ -21,7 +22,7 @@ class UserUpdate(LoginRequiredMixin, UpdateView):
     model = User
     form_class= UserUpdateForm
     template_name = 'registration/user_update.html'
-    
+
     def get_success_url(self):
         return reverse_lazy('user_detail', kwargs={'pk': self.object.pk})
 
@@ -37,6 +38,6 @@ class UserLogout(LogoutView):
     next_page = reverse_lazy('login')
 
 class ChangePassword(LoginRequiredMixin, PasswordChangeView):
-    form_class = ChangePasswordForm
+    form_class = PasswordChangeForm
     template_name = 'registration/change_password.html'
     success_url = reverse_lazy('home')
