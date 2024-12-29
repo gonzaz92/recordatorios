@@ -23,8 +23,19 @@ class CreateStatus(LoginRequiredMixin, CreateView):
     template_name = 'recordatorios/status_form.html'
     success_url = reverse_lazy('status_list')
 
+    def form_valid(self, form):
+        form.instance.user = self.request.user
+        return super().form_valid(form)
+
 class ListStatus(LoginRequiredMixin, ListView):
     model = Status
+
+    def get_queryset(self):
+        user = self.request.user
+        if user:
+            return Status.objects.filter(user=user)
+        else:
+            return Status.objects.all()
 
 class UpdateStatus(LoginRequiredMixin, UpdateView):
     model = Status
@@ -42,8 +53,19 @@ class CreatePriority(LoginRequiredMixin, CreateView):
     template_name = 'recordatorios/priority_form.html'
     success_url = reverse_lazy('priority_list')
 
+    def form_valid(self, form):
+        form.instance.user = self.request.user
+        return super().form_valid(form)
+
 class ListPriority(LoginRequiredMixin, ListView):
     model = Priority
+
+    def get_queryset(self):
+        user = self.request.user
+        if user:
+            return Priority.objects.filter(user=user)
+        else:
+            return Priority.objects.all()
 
 class UpdatePriority(LoginRequiredMixin, UpdateView):
     model = Priority
@@ -64,7 +86,11 @@ class CreateReminder(LoginRequiredMixin, CreateView):
     def form_valid(self, form):
         form.instance.user = self.request.user
         return super().form_valid(form)
-
+    
+    def get_form_kwargs(self):
+        kwargs = super().get_form_kwargs()
+        kwargs['user'] = self.request.user
+        return kwargs
 
 class ListReminder(LoginRequiredMixin, ListView):
     model = Reminder
@@ -72,7 +98,7 @@ class ListReminder(LoginRequiredMixin, ListView):
     def get_queryset(self):
         status = self.request.GET.get('status', None)
         user = self.request.user
-        if status:
+        if user:
             return Reminder.objects.filter(user=user).filter(status=status).order_by('-priority')
         else:
             return Reminder.objects.all().order_by('-priority')
@@ -84,6 +110,11 @@ class UpdateReminder(LoginRequiredMixin, UpdateView):
     model = Reminder
     form_class = ReminderForm
     success_url = reverse_lazy('home')
+
+    def get_form_kwargs(self):
+        kwargs = super().get_form_kwargs()
+        kwargs['user'] = self.request.user
+        return kwargs
 
 class DeleteReminder(LoginRequiredMixin, DeleteView):
     model = Reminder

@@ -32,3 +32,10 @@ class ReminderForm(forms.ModelForm):
             'status': forms.Select(attrs={'class': 'form-control'}),
             'priority': forms.Select(attrs={'class': 'form-control'}),
         }
+    
+    def __init__(self, *args, **kwargs):
+        user = kwargs.pop('user', None)
+        super().__init__(*args, **kwargs)
+        if user:
+            self.fields['status'].queryset = Status.objects.filter(user=user)
+            self.fields['priority'].queryset = Priority.objects.filter(user=user)

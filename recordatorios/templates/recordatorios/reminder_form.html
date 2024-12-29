@@ -34,9 +34,15 @@
                         {{ form.description }}
                     </div>
                 </div>
-                <div>
-                    <td>Responsable: {{ request.user.username }}</td>  
-                </div>
+                {% if request.resolver_match.view_name == 'create_reminder' %}
+                    <div>
+                        <div hidden>{{ request.user.username }}</div>
+                    </div>
+                {% elif request.resolver_match.view_name == 'update_reminder' %}
+                    <div>
+                        <div hidden>{{ form.user }}</div>
+                    </div>
+                {% endif %}
             </div>
             {% if request.resolver_match.view_name == 'create_reminder' %}
                 <div class="card-footer">

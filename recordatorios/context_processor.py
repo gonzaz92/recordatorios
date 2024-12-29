@@ -2,11 +2,17 @@ from recordatorios.models import Status, Priority, Reminder
 from itertools import groupby
 
 def list_status(request):
-    list_status = Status.objects.values('id', 'name')
+    if request.user.is_authenticated:
+        list_status = Status.objects.filter(user=request.user).values('id', 'name')
+    else:
+        list_status = []
     return {'list_status': list_status}
 
 def list_priority(request):
-    list_priority = Priority.objects.values('id', 'name', 'color')
+    if request.user.is_authenticated:
+        list_priority = Priority.objects.filter(user=request.user).values('id', 'name', 'color')
+    else:
+        list_priority = []
     return {'list_priority': list_priority}
 
 # def list_reminder(request):
