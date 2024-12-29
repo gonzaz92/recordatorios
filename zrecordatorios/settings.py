@@ -26,7 +26,9 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = os.environ.get('SECRET_KEY', default='your secret key')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = 'RENDER' not in os.environ
+# DEBUG = 'RENDER' not in os.environ
+
+DEBUG = True
 
 ALLOWED_HOSTS = []
 
@@ -86,19 +88,19 @@ WSGI_APPLICATION = 'zrecordatorios.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
 
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.sqlite3',
-#         'NAME': BASE_DIR / 'db.sqlite3',
-#     }
-# }
-
-DATABASES= {
-    'default': dj_database_url.config(
-        default='postgresql://postgres:postgres@localhost:postgres',
-        conn_max_age=600
-    )
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / 'db.sqlite3',
+    }
 }
+
+# DATABASES= {
+#     'default': dj_database_url.config(
+#         default='postgresql://postgres:postgres@localhost:postgres',
+#         conn_max_age=600
+#     )
+# }
 
 
 # Password validation
