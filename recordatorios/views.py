@@ -5,6 +5,7 @@ from django.views.generic import CreateView, ListView, DetailView, UpdateView, D
 from recordatorios.forms import StatusForm, PriorityForm, ReminderForm
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.decorators import login_required
+from django.db.models import Q
 
 ##########################################################################################
 
@@ -114,12 +115,21 @@ class ListReminder(LoginRequiredMixin, ListView):
     model = Reminder
 
     def get_queryset(self):
-        status = self.request.GET.get('status', None)
         user = self.request.user
-        if user:
-            return Reminder.objects.filter(user=user).filter(status=status).order_by('-priority')
-        else:
-            return Reminder.objects.all().order_by('-priority')
+        query = self.request.GET.get('q')
+        status = self.request.GET.get('status', None)
+        
+        queryset = Reminder.objects.filter(user=user)
+        
+        if status:
+            queryset = queryset.filter(status=status)
+        
+        if query:
+            queryset = queryset.filter(
+                Q(title__icontains=query) | Q(description__icontains=query)
+            )
+        
+        return queryset.order_by('-priority')
 
 class DetailReminder(LoginRequiredMixin, DetailView):
     model = Reminder

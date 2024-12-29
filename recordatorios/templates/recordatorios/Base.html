@@ -37,9 +37,9 @@
                 </ul>
                 <div class="navbar-nav ms-auto">
                     {% if user.is_authenticated %}
-                        <form class="d-flex" role="search">
-                            <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
-                            <button class="btn btn-outline-light" type="submit">Search</button>
+                        <form class="d-flex" role="search" method="get" action="{% url 'reminder_list' %}?q={{ request.GET.q|default:'' }}">
+                            <input class="form-control me-2" type="search" name="q" placeholder="Buscar..." aria-label="Buscar">
+                            <button class="btn btn-outline-light" type="submit">Buscar</button>
                         </form>
                         <li class='nav-item dropdown'>
                             <a class="nav-link text-light text-uppercase dropdown-toggle" role="button" data-bs-toggle="dropdown" aria-expanded="false">
@@ -47,6 +47,7 @@
                             </a>
                             <ul class='dropdown-menu dropdown-menu-end'>
                                 <li><a class='dropdown-item' href="{% url 'user_detail' user.id %}">Ver Datos</a></li>
+                                <li><a class='dropdown-item' href="{% url 'change_password' user.id %}">Cambiar contraseña</a></li>
                                 <li><a class='dropdown-item' href="{% url 'status_list' %}">Estados</a></li>
                                 <li><a class='dropdown-item' href="{% url 'priority_list' %}">Prioridades</a></li>
                                 <li>
