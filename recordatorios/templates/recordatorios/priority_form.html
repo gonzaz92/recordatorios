@@ -13,6 +13,15 @@
                         {{ form.name }}
                         <div class='my-3'></div>
                         {{ form.color }}
+                        {% if request.resolver_match.view_name == 'create_reminder' %}
+                        <div>
+                            <div hidden>{{ request.user.username }}</div>
+                        </div>
+                        {% elif request.resolver_match.view_name == 'update_reminder' %}
+                            <div>
+                                <div hidden>{{ form.user }}</div>
+                            </div>
+                        {% endif %}
                     </div>
                     {% if request.resolver_match.view_name == 'create_priority' %}
                         <div class="card-footer">

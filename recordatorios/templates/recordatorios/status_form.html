@@ -9,7 +9,18 @@
                 <form method="POST">
                     {% csrf_token %}
                     <div class="card-header text-center">Nuevo Estado</div>
-                    <div class="card-body">{{ form.name }}</div>
+                    <div class="card-body">
+                        {{ form.name }}
+                    {% if request.resolver_match.view_name == 'create_reminder' %}
+                        <div>
+                            <div hidden>{{ request.user.username }}</div>
+                        </div>
+                    {% elif request.resolver_match.view_name == 'update_reminder' %}
+                        <div>
+                            <div hidden>{{ form.user }}</div>
+                        </div>
+                    {% endif %}
+                    </div>
                     {% if request.resolver_match.view_name == 'create_status' %}
                         <div class="card-footer">
                             <div class="d-flex justify-content-center">
