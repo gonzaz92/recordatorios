@@ -42,6 +42,15 @@ class UpdateStatus(LoginRequiredMixin, UpdateView):
     form_class = StatusForm
     success_url = reverse_lazy('status_list')
 
+    def form_valid(self, form):
+        form.instance.user = self.request.user
+        return super().form_valid(form)
+
+    def get_form_kwargs(self):
+        kwargs = super().get_form_kwargs()
+        kwargs['user'] = self.request.user
+        return kwargs
+
 class DeleteStatus(LoginRequiredMixin, DeleteView):
     model = Status
     success_url = reverse_lazy('status_list')
@@ -71,6 +80,15 @@ class UpdatePriority(LoginRequiredMixin, UpdateView):
     model = Priority
     form_class = PriorityForm
     success_url = reverse_lazy('priority_list')
+
+    def form_valid(self, form):
+        form.instance.user = self.request.user
+        return super().form_valid(form)
+
+    def get_form_kwargs(self):
+        kwargs = super().get_form_kwargs()
+        kwargs['user'] = self.request.user
+        return kwargs
 
 class DeletePriority(LoginRequiredMixin, DeleteView):
     model = Priority
@@ -110,6 +128,10 @@ class UpdateReminder(LoginRequiredMixin, UpdateView):
     model = Reminder
     form_class = ReminderForm
     success_url = reverse_lazy('home')
+
+    def form_valid(self, form):
+        form.instance.user = self.request.user
+        return super().form_valid(form)
 
     def get_form_kwargs(self):
         kwargs = super().get_form_kwargs()
