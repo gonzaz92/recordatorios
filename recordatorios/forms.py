@@ -12,6 +12,12 @@ class StatusForm(forms.ModelForm):
             'name': forms.TextInput(attrs={'class': 'form-control'}),
         }
 
+    def __init__(self, *args, **kwargs):
+        user = kwargs.pop('user', None)  # Extraemos 'user' si está en kwargs
+        super().__init__(*args, **kwargs)
+        if user:
+            self.instance.user = user 
+
 class PriorityForm(forms.ModelForm):
     class Meta:
         model = Priority
@@ -20,6 +26,12 @@ class PriorityForm(forms.ModelForm):
             'name': forms.TextInput(attrs={'class': 'form-control'}),
             'color': forms.TextInput(attrs={'type': 'color'}),
         }
+
+    def __init__(self, *args, **kwargs):
+        user = kwargs.pop('user', None)  # Extraemos 'user' si está en kwargs
+        super().__init__(*args, **kwargs)
+        if user:
+            self.instance.user = user 
 
 class ReminderForm(forms.ModelForm):
     description = forms.CharField(widget=CKEditorWidget())
