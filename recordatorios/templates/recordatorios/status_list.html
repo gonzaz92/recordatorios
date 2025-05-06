@@ -1,0 +1,26 @@
+{% extends 'recordatorios/Base.html' %}
+{% block contenido %}
+
+<div class="container px-4 px-lg-5 mt-5">
+    <table class='table table-bordered' style='margin-bottom: 4rem;'>
+        <thead>
+            <tr class='text-center'>
+                <th>Estados</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for status in object_list %}
+            <tr>
+                <td class='text-center'>{{ status.name }}</td>
+                <td class='text-center'>
+                    <a class="btn btn-outline-dark" href="{% url 'update_status' status.id %}">Actualizar</a>
+                    <a class="btn btn-outline-dark" href="{% url 'delete_status' status.id %}">Borrar</a>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+{% endblock %}

@@ -1,0 +1,44 @@
+{% extends 'recordatorios/Base.html' %}
+
+{% block contenido %}
+
+<div class="container" style='margin-bottom: 2rem'>
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card mt-5" style='background-color: #e1ebea'>
+                <form method="POST">
+                    {% csrf_token %}
+                    <div class="card-header text-center">Nuevo Estado</div>
+                    <div class="card-body">
+                        {{ form.name }}
+                    {% if request.resolver_match.view_name == 'create_reminder' %}
+                        <div>
+                            <div hidden>{{ request.user.username }}</div>
+                        </div>
+                    {% elif request.resolver_match.view_name == 'update_reminder' %}
+                        <div>
+                            <div hidden>{{ form.user }}</div>
+                        </div>
+                    {% endif %}
+                    </div>
+                    {% if request.resolver_match.view_name == 'create_status' %}
+                        <div class="card-footer">
+                            <div class="d-flex justify-content-center">
+                                <button class="btn btn-outline-dark btn-block" type="submit">Agregar</button>
+                            </div>
+                        </div>
+                    {% else %}
+                        <div class="card-footer">
+                            <div class="d-flex justify-content-center">
+                                <button class="btn btn-outline-dark btn-block" type="submit">Actualizar</button>
+                            </div>
+                        </div>
+                    {% endif %}
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+{% endblock %}

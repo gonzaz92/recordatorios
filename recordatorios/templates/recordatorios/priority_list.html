@@ -1,0 +1,26 @@
+{% extends 'recordatorios/Base.html' %}
+{% block contenido %}
+
+<div class="container px-4 px-lg-5 mt-5">
+    <table class='table table-bordered' style='margin-bottom: 4rem;'>
+        <thead>
+            <tr class='text-center'>
+                <th>Prioridades</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for priority in object_list %}
+            <tr>
+                <td class='text-center'>{{ priority.name }}</td>
+                <td class='text-center'>
+                    <a class="btn btn-outline-dark" href="{% url 'update_priority' priority.id %}">Actualizar</a>
+                    <a class="btn btn-outline-dark" href="{% url 'delete_priority' priority.id %}">Borrar</a>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+{% endblock %}
