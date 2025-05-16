@@ -7,7 +7,7 @@ from ckeditor.widgets import CKEditorWidget
 class StatusForm(forms.ModelForm):
     class Meta:
         model = Status
-        fields = '__all__'
+        fields = ['name']
         widgets = {
             'name': forms.TextInput(attrs={'class': 'form-control'}),
         }
@@ -21,7 +21,7 @@ class StatusForm(forms.ModelForm):
 class PriorityForm(forms.ModelForm):
     class Meta:
         model = Priority
-        fields = '__all__'
+        fields = ['name', 'color']
         widgets = {
             'name': forms.TextInput(attrs={'class': 'form-control'}),
             'color': forms.TextInput(attrs={'type': 'color'}),

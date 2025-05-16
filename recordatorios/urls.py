@@ -1,5 +1,5 @@
 from django.urls import path
-from recordatorios.views import (home, cards,
+from recordatorios.views import (home, cards, up_status, down_status, up_priority, down_priority,
                                 CreateStatus, ListStatus, UpdateStatus, DeleteStatus,
                                 CreatePriority, ListPriority, UpdatePriority, DeletePriority,
                                 CreateReminder, ListReminder, DetailReminder, UpdateReminder, DeleteReminder)
@@ -14,6 +14,8 @@ urlpatterns = [
     path('status_list/', ListStatus.as_view(), name='status_list'),
     path('update_status/<int:pk>/', UpdateStatus.as_view(), name='update_status'),
     path('delete_status/<int:pk>/', DeleteStatus.as_view(), name='delete_status'),
+    path('up_status/<int:pk>/', up_status, name='up_status'),
+    path('down_status/<int:pk>/', down_status, name='down_status'),
 
 ##########################################################################################
 
@@ -21,6 +23,8 @@ urlpatterns = [
     path('priority_list/', ListPriority.as_view(), name='priority_list'),
     path('update_piority/<int:pk>/', UpdatePriority.as_view(), name='update_priority'),
     path('delete_priority/<int:pk>/', DeletePriority.as_view(), name='delete_priority'),
+    path('down_priority/<int:pk>/', up_priority, name='up_priority'),
+    path('up_priority/<int:pk>/', down_priority, name='down_priority'),
 
 ##########################################################################################
 

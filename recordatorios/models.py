@@ -5,17 +5,25 @@ from django.contrib.auth.models import User
 class Status(models.Model):
     name = models.CharField(max_length=50)
     user = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True)
+    orden = models.PositiveIntegerField(default=0)
 
     def __str__(self):
         return self.name
+    
+    class Meta:
+        ordering = ['orden']
 
 class Priority(models.Model):
     name = models.CharField(max_length=50)
     color = models.CharField(max_length=7)
     user = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True)
+    orden = models.PositiveIntegerField(default=0)
 
     def __str__(self):
         return self.name
+    
+    class Meta:
+        ordering = ['orden']
 
 class Reminder(models.Model):
     title = models.CharField(max_length = 100)

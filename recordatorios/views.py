@@ -1,11 +1,12 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse_lazy
 from recordatorios.models import Status, Priority, Reminder
 from django.views.generic import CreateView, ListView, DetailView, UpdateView, DeleteView
 from recordatorios.forms import StatusForm, PriorityForm, ReminderForm
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.decorators import login_required
-from django.db.models import Q
+from django.db.models import Q, Max
+from django.db import transaction
 
 ##########################################################################################
 
@@ -26,17 +27,35 @@ class CreateStatus(LoginRequiredMixin, CreateView):
 
     def form_valid(self, form):
         form.instance.user = self.request.user
+        max_orden = Status.objects.filter(user=self.request.user).aggregate(Max('orden'))['orden__max'] or 0
+        form.instance.orden = max_orden + 1
         return super().form_valid(form)
+    
+def up_status(request, pk):
+    status = get_object_or_404(Status, pk=pk, user=request.user)
+    with transaction.atomic():
+        previous = Status.objects.filter(user=request.user, orden__lt=status.orden).order_by('-orden').first()
+        if previous:
+            status.orden, previous.orden = previous.orden, status.orden
+            status.save()
+            previous.save()
+        return redirect('status_list')
+
+def down_status(request, pk):
+    status = get_object_or_404(Status, pk=pk, user=request.user)
+    with transaction.atomic():
+        next = Status.objects.filter(user=request.user, orden__gt=status.orden).order_by('orden').first()
+        if next:
+            status.orden, next.orden = next.orden, status.orden
+            status.save()
+            next.save()
+        return redirect('status_list')
 
 class ListStatus(LoginRequiredMixin, ListView):
     model = Status
 
     def get_queryset(self):
-        user = self.request.user
-        if user:
-            return Status.objects.filter(user=user)
-        else:
-            return Status.objects.all()
+        return Status.objects.filter(user=self.request.user).order_by('orden')
 
 class UpdateStatus(LoginRequiredMixin, UpdateView):
     model = Status
@@ -65,17 +84,35 @@ class CreatePriority(LoginRequiredMixin, CreateView):
 
     def form_valid(self, form):
         form.instance.user = self.request.user
+        max_orden = Priority.objects.filter(user=self.request.user).aggregate(Max('orden'))['orden__max'] or 0
+        form.instance.orden = max_orden + 1
         return super().form_valid(form)
+    
+def up_priority(request, pk):
+    priority = get_object_or_404(Priority, pk=pk, user=request.user)
+    with transaction.atomic():
+        previous = Priority.objects.filter(user=request.user, orden__lt=priority.orden).order_by('-orden').first()
+        if previous:
+            priority.orden, previous.orden = previous.orden, priority.orden
+            priority.save()
+            previous.save()
+    return redirect('priority_list')
+
+def down_priority(request, pk):
+    priority = get_object_or_404(Priority, pk=pk, user=request.user)
+    with transaction.atomic():
+        next = Priority.objects.filter(user=request.user, orden__gt=priority.orden).order_by('orden').first()
+        if next:
+            priority.orden, next.orden = next.orden, priority.orden
+            priority.save()
+            next.save()
+    return redirect('priority_list')
 
 class ListPriority(LoginRequiredMixin, ListView):
     model = Priority
 
     def get_queryset(self):
-        user = self.request.user
-        if user:
-            return Priority.objects.filter(user=user)
-        else:
-            return Priority.objects.all()
+        return Priority.objects.filter(user=self.request.user).order_by('orden')
 
 class UpdatePriority(LoginRequiredMixin, UpdateView):
     model = Priority
@@ -129,7 +166,7 @@ class ListReminder(LoginRequiredMixin, ListView):
                 Q(title__icontains=query) | Q(description__icontains=query)
             )
         
-        return queryset.order_by('-priority')
+        return queryset.order_by('priority')
 
 class DetailReminder(LoginRequiredMixin, DetailView):
     model = Reminder

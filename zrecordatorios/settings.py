@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 
 from pathlib import Path
 import os
+from decouple import config, Csv
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -21,15 +22,14 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/5.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-gmthiv5g0q^e9j345vygpym6cypinf8$7qx!@dt%582d_2o6xg'
-# SECRET_KEY = os.environ.get('SECRET_KEY', default='your secret key')
+SECRET_KEY = config('DB_SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 # DEBUG = 'RENDER' not in os.environ
 
-DEBUG = True
+DEBUG = config('DB_DEBUG', cast=bool)
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = config('DB_ALLOWED_HOSTS', cast=Csv())
 
 # RENDER_EXTERNAL_HOSTNAME = os.environ.get('RENDER_EXTERNAL_HOSTNAME')
 # if RENDER_EXTERNAL_HOSTNAME:
@@ -104,11 +104,11 @@ WSGI_APPLICATION = 'zrecordatorios.wsgi.application'
 DATABASES= {
     'default': {
         'ENGINE' : "django.db.backends.mysql",
-        'NAME' : "recordatorios",
-        'USER' : 'root',
-        'PASSWORD' : '#',
-        'HOST' : '127.0.0.1',
-        'PORT' : '3306',
+        'NAME' : config('DB_NAME'),
+        'USER' : config('DB_USER'),
+        'PASSWORD' : config('DB_PASSWORD'),
+        'HOST' : config('DB_HOST'),
+        'PORT' : config('DB_PORT'),
     }
 }
 
