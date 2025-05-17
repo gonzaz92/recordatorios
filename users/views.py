@@ -20,7 +20,7 @@ class UserDetail(LoginRequiredMixin, DetailView):
 class UserUpdate(LoginRequiredMixin, UpdateView):
     model = User
     form_class= UserUpdateForm
-    template_name = 'registration/user_update.html'
+    template_name = 'registration/signup.html'
     
     def get_success_url(self):
         return reverse_lazy('user_detail', kwargs={'pk': self.object.pk})
