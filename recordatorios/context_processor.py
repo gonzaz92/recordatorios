@@ -24,7 +24,7 @@ def list_reminder(request):
         return {'list_reminder': []}
     else:
         # Obtener los recordatorios ordenados por priority
-        list_reminder = list(Reminder.objects.filter(user=request.user).values('id', 'title', 'status', 'priority','user').order_by('priority'))
+        list_reminder = list(Reminder.objects.filter(user=request.user).values('id', 'title', 'status', 'priority','user').order_by('priority', 'id'))
 
         # Agrupar por 'status'
         grouped_by_status = groupby(sorted(list_reminder, key=lambda x: x['status']), key=lambda x: x['status'])
