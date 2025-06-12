@@ -27,7 +27,7 @@
                     <a class="btn btn-outline-dark btn-block" href="{% url 'update_reminder' object.id %}">Actualizar</a>
                 </div>
                 <div class="col-auto">
-                    <a class="btn btn-outline-dark btn-block" href="{% url 'reminder_list' %}?status={{ status.id }}">Regresar</a>
+                    <a class="btn btn-outline-dark btn-block" href="{% url 'reminder_list' %}?status={{ reminder.status }}">Regresar</a>
                 </div>
             </div>
         </div>
